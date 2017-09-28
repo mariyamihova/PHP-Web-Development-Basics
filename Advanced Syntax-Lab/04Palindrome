@@ -1,0 +1,18 @@
+<?php
+
+$text=fgets(STDIN);
+
+
+IsPalindrome($text);
+
+function IsPalindrome($text){
+
+    $reversed=strrev($text);
+
+if($reversed==$text)
+{
+    echo "true";
+}else{
+    echo "false";
+}
+}
