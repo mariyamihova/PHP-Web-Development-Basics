@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="">
+    <div>
+        <label>Enter your name </label>
+        <input type="text">
+    </div>
+    <div>
+        <label>Select file format</label>
+    <select name="format" id="format">
+        <option>XML</option>
+        <option>PDF</option>
+        <option>JSON</option>
+        <option>Plain text</option>
+    </select>
+
+</div>
+
+    <div>
+        <label>Select file size</label>
+        <select name="size" id="size">
+            <optgroup label="Small files">
+            <option>1MB</option>
+            <option>2MB</option>
+            <option>3MB</option>
+            <option>4MB</option>
+        </optgroup>
+            <optgroup label="Big files">
+                <option>5MB</option>
+                <option>6MB</option>
+                <option>7MB</option>
+                <option>8MB</option>
+            </optgroup>
+        </select>
+    </div>
+
+    <div>
+        <label>I will pay in</label>
+        <input type="radio" name="currency" id="usd" value="usd" checked>
+        <label for="usd">USD</label>
+        <input type="radio" name="currency" id="eur" value="eur">
+        <label for="eur">EUR</label>
+        <input type="radio" name="currency" id="bgn" value="bgn">
+        <label for="bgn">BGN</label>
+        <input type="radio" name="currency" id="other" value="other">
+        <label for="other">Other</label>
+    </div>
+    <div>
+        <label>Shippment date</label>
+        <input type="date" name="bday">
+    </div>
+    <div>
+        <label>Select your favourite color</label>
+        <input type="color" name="favcolor">
+    </div>
+    <label>Write your comments here:</label>
+    <div>
+        <textarea rows="5" cols="25"></textarea>
+    </div>
+    <div>
+    <label>Write your e-mail address</label>
+    <input type="email" name="email">
+</div>
+    <div>
+        <label>How was shopping at our site</label>
+        <input type="range" name="points" min="0" max="10">
+    </div>
+
+    <div>
+        <input type="submit" value="Send my purchase" name="submit">
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,179 @@
+-- --------------------------------------------------------
+-- Хост:                         127.0.0.1
+-- Версия на сървъра:            10.1.25-MariaDB - mariadb.org binary distribution
+-- ОС на сървъра:                Win32
+-- HeidiSQL Версия:              9.4.0.5125
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+-- Dumping database structure for cars
+CREATE DATABASE IF NOT EXISTS `cars` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `cars`;
+
+-- Дъмп структура за функция cars.concat_name
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `concat_name`(
+first_name VARCHAR(255),
+last_name VARCHAR(255)
+) RETURNS varchar(512) CHARSET utf8
+BEGIN
+        RETURN CONCAT(first_name,' ',last_name);
+    END//
+DELIMITER ;
+
+-- Дъмп структура за таблица cars.customers
+CREATE TABLE IF NOT EXISTS `customers` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) NOT NULL DEFAULT '0',
+  `last_name` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+-- Дъмп данни за таблица cars.customers: ~22 rows (approximately)
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`) VALUES
+	(10, 'Ivan', 'Ivanov'),
+	(11, 'Ilia', 'Petrov'),
+	(12, 'Stoyan', 'Lazarov'),
+	(13, 'Atanas', 'Ganchev'),
+	(14, 'Georgi', 'Ivanov'),
+	(15, 'Stoyan', 'Lazarov'),
+	(16, 'Ivan', 'Ivanov'),
+	(17, 'Ilia', 'Petrov'),
+	(18, 'Stoyan', 'Lazarov'),
+	(19, 'Ivan', 'Ivanov'),
+	(20, 'Ilia', 'Petrov'),
+	(21, 'Stoyan', 'Lazarov'),
+	(22, 'Stoyan', 'Lazarov'),
+	(23, 'Ilia', 'Petrov'),
+	(24, 'Ivan', 'Ivanov'),
+	(25, 'Ivan', 'Ivanov'),
+	(26, 'Ivan', 'Ivanov'),
+	(27, 'Ilia', 'Petrov'),
+	(28, 'Stoyan', 'Lazarov'),
+	(29, 'Ivan', 'Ivanov'),
+	(30, 'Stoyan', 'Lazarov'),
+	(31, 'Stoyan', 'Lazarov');
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+
+-- Дъмп структура за view cars.deal
+-- Creating temporary table to overcome VIEW dependency errors
+CREATE TABLE `deal` (
+	`datetime` DATETIME NULL,
+	`amount` FLOAT NOT NULL,
+	`make` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	`model` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	`year` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	`first_name` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	`last_name` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci'
+) ENGINE=MyISAM;
+
+-- Дъмп структура за procedure cars.getSales
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSales`()
+BEGIN
+SELECT SUM(amount) as total FROM sales;
+END//
+DELIMITER ;
+
+-- Дъмп структура за таблица cars.sales
+CREATE TABLE IF NOT EXISTS `sales` (
+  `sale_id` int(11) NOT NULL AUTO_INCREMENT,
+  `car_id` int(11) NOT NULL DEFAULT '0',
+  `customer_id` int(11) NOT NULL DEFAULT '0',
+  `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `amount` float NOT NULL DEFAULT '0',
+  PRIMARY KEY (`sale_id`),
+  KEY `FK__usedcars` (`car_id`),
+  KEY `FK_sales_customers` (`customer_id`),
+  CONSTRAINT `FK__usedcars` FOREIGN KEY (`car_id`) REFERENCES `usedcars` (`car_id`),
+  CONSTRAINT `FK_sales_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+-- Дъмп данни за таблица cars.sales: ~22 rows (approximately)
+/*!40000 ALTER TABLE `sales` DISABLE KEYS */;
+INSERT INTO `sales` (`sale_id`, `car_id`, `customer_id`, `datetime`, `amount`) VALUES
+	(10, 14, 10, '2017-10-24 19:09:26', 7000),
+	(11, 15, 11, '2017-08-24 19:10:16', 24000),
+	(12, 16, 12, '2017-10-24 19:10:41', 3800),
+	(13, 17, 13, '2017-09-24 19:11:59', 8000),
+	(14, 15, 14, '2017-10-25 10:39:18', 24000),
+	(15, 16, 12, '2017-10-25 10:47:34', 3800),
+	(16, 14, 10, '2017-10-25 10:49:21', 7000),
+	(17, 15, 11, '2017-10-25 11:00:10', 24000),
+	(18, 16, 12, '2017-10-25 11:01:11', 3800),
+	(19, 14, 10, '2017-10-25 11:13:07', 7000),
+	(20, 15, 11, '2017-10-25 11:13:41', 24000),
+	(21, 16, 12, '2017-10-25 11:15:34', 3800),
+	(22, 16, 12, '2017-10-25 11:17:43', 3800),
+	(23, 15, 11, '2017-10-25 11:18:00', 24000),
+	(24, 14, 10, '2017-10-25 11:19:52', 7000),
+	(25, 14, 10, '2017-10-25 11:20:25', 7000),
+	(26, 14, 10, '2017-10-25 11:21:18', 7000),
+	(27, 15, 11, '2017-10-25 11:23:12', 24000),
+	(28, 16, 12, '2017-10-25 11:23:33', 3800),
+	(29, 14, 10, '2017-10-25 11:25:34', 7000),
+	(30, 16, 12, '2017-10-25 11:27:16', 3800),
+	(31, 16, 12, '2017-10-25 11:27:24', 3800);
+/*!40000 ALTER TABLE `sales` ENABLE KEYS */;
+
+-- Дъмп структура за таблица cars.usedcars
+CREATE TABLE IF NOT EXISTS `usedcars` (
+  `car_id` int(11) NOT NULL AUTO_INCREMENT,
+  `make` varchar(50) NOT NULL,
+  `model` varchar(50) NOT NULL,
+  `year` varchar(50) NOT NULL,
+  PRIMARY KEY (`car_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+
+-- Дъмп данни за таблица cars.usedcars: ~21 rows (approximately)
+/*!40000 ALTER TABLE `usedcars` DISABLE KEYS */;
+INSERT INTO `usedcars` (`car_id`, `make`, `model`, `year`) VALUES
+	(14, 'Audi', 'A4', '2004'),
+	(15, 'BMW', '116', '2010'),
+	(16, 'Ford', 'Focus', '2004'),
+	(17, 'Toyota', 'Corolla', '2004'),
+	(18, 'BMW', '116', '2010'),
+	(19, 'Ford', 'Focus', '2004'),
+	(20, 'Audi', 'A4', '2004'),
+	(21, 'BMW', '116', '2010'),
+	(22, 'Ford', 'Focus', '2004'),
+	(23, 'Audi', 'A4', '2004'),
+	(24, 'BMW', '116', '2010'),
+	(25, 'Ford', 'Focus', '2004'),
+	(26, 'Ford', 'Focus', '2004'),
+	(27, 'BMW', '116', '2010'),
+	(28, 'Audi', 'A4', '2004'),
+	(29, 'Audi', 'A4', '2004'),
+	(30, 'Audi', 'A4', '2004'),
+	(31, 'BMW', '116', '2010'),
+	(32, 'Ford', 'Focus', '2004'),
+	(33, 'Audi', 'A4', '2004'),
+	(34, 'Ford', 'Focus', '2004'),
+	(35, 'Ford', 'Focus', '2004');
+/*!40000 ALTER TABLE `usedcars` ENABLE KEYS */;
+
+-- Дъмп структура за trigger cars.totalsales
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `totalsales` BEFORE INSERT ON `sales` FOR EACH ROW set @sum=@sum+new.amount//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Дъмп структура за view cars.deal
+-- Removing temporary table and create final VIEW structure
+DROP TABLE IF EXISTS `deal`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `deal` AS SELECT datetime, amount, make, model, year, first_name, last_name
+FROM sales
+inner join usedcars using(car_id)
+inner join customers using(customer_id) ;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
